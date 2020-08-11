@@ -1,0 +1,46 @@
+@model List<UserRoleViewModel>
+
+@inject RoleManager<IdentityRole> roleManager;
+
+@{
+    var roleId = ViewBag.roleId;
+}
+
+<form method="POST">
+    <div class="card">
+        <div class="card-header">
+            <h2>Add or remove users from this role</h2>
+        </div>
+        <div class="card-body">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                @if (Model[i].UserName == User.Identity.Name && await roleManager.GetRoleNameAsync(await roleManager.FindByIdAsync(roleId)) == Constants.SuperAdminRole)
+                {
+                    <div class="form-check m-1">
+                        <input type="hidden" asp-for="@Model[i].UserId" />
+                        <input type="hidden" asp-for="@Model[i].UserName" />
+                        <input asp-for="@Model[i].IsSelected" class="form-check-input" disabled/>
+                        <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                            @Model[i].UserName
+                        </label>
+                    </div>   
+                }
+                else
+                {
+                    <div class="form-check m-1">
+                        <input type="hidden" asp-for="@Model[i].UserId" />
+                        <input type="hidden" asp-for="@Model[i].UserName" />
+                        <input asp-for="@Model[i].IsSelected" class="form-check-input" />
+                        <label class="form-check-label" asp-for="@Model[i].IsSelected">
+                            @Model[i].UserName
+                        </label>
+                    </div>
+                }
+            }
+        </div>
+        <div class="card-footer">
+            <input type="submit" value="Update" class="btn btn-primary" />
+            <a asp-action="EditRole" asp-route-id="@roleId" class="btn brn-primary">Cancel</a>
+        </div>
+    </div>
+</form>

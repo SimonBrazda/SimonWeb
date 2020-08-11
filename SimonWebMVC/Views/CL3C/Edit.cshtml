@@ -1,0 +1,9 @@
+@model CL3CCreateOrEditViewModel
+@{
+    ViewBag.Title = "Edit Car of ID " + @Model.Car.ID;
+}
+
+<h1>@ViewBag.Title</h1>
+<hr />
+
+<partial name="_CarFormPartial" model="Model" />

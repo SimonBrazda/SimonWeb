@@ -1,0 +1,36 @@
+@model List<UserRolesViewModel>
+
+@inject UserManager<ApplicationUser> userManager
+
+@{
+    var userId = ViewBag.userId;
+    var user = (ApplicationUser) await userManager.GetUserAsync(User);
+    var isAuthorized = await userManager.IsInRoleAsync(user, Constants.SuperAdminRole);
+}
+
+<form method="post">
+    <div class="card col-sm-6">
+        <div class="card-header">
+            <h2>Manage User Roles</h2>
+        </div>
+        <div class="card-body">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                @if ((isAuthorized || Model[i].RoleName == Constants.UserRole) && Model[i].RoleName != Constants.SuperAdminRole)
+                {
+                    <div class="form-check m-1">
+                        <input type="hidden" asp-for="@Model[i].RoleId" />
+                        <input type="hidden" asp-for="@Model[i].RoleName" />
+                        <input asp-for="@Model[i].IsSelected" class="form-check-input"/>
+                        <label asp-for="@Model[i].IsSelected" class="form-check-label">@Model[i].RoleName</label>
+                    </div>
+                }
+            }
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary" type="submit">Update</button>
+            <a class="btn btn-primary" asp-controller="Administration" asp-action="EditUser" asp-route-userId="@userId">Cancel</a>
+        </div>
+    </div>
+</form>

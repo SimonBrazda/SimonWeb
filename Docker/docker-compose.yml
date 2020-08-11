@@ -1,0 +1,23 @@
+# version: '3.8'
+ 
+# services:
+#    cardb:
+#      image: mariadb
+#      environment:
+#        MYSQL_PASSWORD: brzda439357
+#      volumes:
+#        - dbdata:/var/lib/mysql
+#        - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
+#      restart: always
+ 
+#    simonweb:
+#      depends_on:
+#        - cardb
+#      image: rbrazda/simonweb:latest
+#      build:
+#        context: .
+#      ports:
+#        - "8080:80"
+ 
+# volumes:
+#     cardb-vol:

@@ -1,0 +1,11 @@
+﻿@model int
+@{
+    ViewBag.Title = "404 Error";
+}
+
+<div class="alert alert-danger mt-1 mb-1">
+    <h4>404 Not Found</h4>
+    <hr />
+    <h5>Car with id = @Model cannot be found</h5>
+</div>
+<a asp-action="List" asp-controller="CL3C" class="btn btn-primary">Display list of cars</a>

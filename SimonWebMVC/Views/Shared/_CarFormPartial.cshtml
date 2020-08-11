@@ -1,0 +1,67 @@
+@model CL3CCreateOrEditViewModel
+@using Microsoft.Extensions.Options
+@using reCAPTCHA.AspNetCore
+@using reCAPTCHA.AspNetCore.Versions;
+@using ExchangeRatesLib;
+
+@inject IOptions<RecaptchaSettings> RecaptchaSettings
+
+<form asp-controller="CL3C" asp-action="@Model.Action" method="POST" class="mt-3">
+    <input type="hidden" asp-for="Car.ID" class="form-control">
+    <input type="hidden" asp-for="Car.Owner" class="form-control">
+    <div class="form-group row">
+        <label asp-for="Car.Name" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-3">
+            <input asp-for="Car.Name" class="form-control" placeholder="Name">
+            <span asp-validation-for="Car.Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Car.PurchasePrice" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-3">
+            <input asp-for="Car.PurchasePrice" class="form-control" placeholder="Purchase Price">
+            <span asp-validation-for="Car.PurchasePrice" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Car.TechnicalLife" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-3">
+            <input asp-for="Car.TechnicalLife" class="form-control" placeholder="Technical Life">
+            <span asp-validation-for="Car.TechnicalLife" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Car.FuelPrice" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-3">
+            <input asp-for="Car.FuelPrice" class="form-control" placeholder="Fuel Price">
+            <span asp-validation-for="Car.FuelPrice" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Car.FuelConsumption" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-3">
+            <input asp-for="Car.FuelConsumption" class="form-control" placeholder="Fuel Consumption">
+            <span asp-validation-for="Car.FuelConsumption" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="currencySelect" class="col-sm-2 col-form-label">Currency:</label>
+        <select asp-for="@Model.Currency" asp-items="Html.GetEnumSelectList<CurrencyEnum>()" class="form-control col-sm-2" id="currencySelect" onchange="form.submit()">
+        </select>
+    </div>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit" asp-action="@Model.Action">Save</button>
+        &nbsp;
+        <a class="btn btn-primary" asp-controller="CL3C" asp-action="List">Cancel</a>
+    </div>
+
+    @if (Model.Action == "Create")
+    {
+        <div class="form-group">
+            @(Html.Recaptcha<RecaptchaV2Checkbox>(RecaptchaSettings.Value))
+        </div>
+    }
+</form>

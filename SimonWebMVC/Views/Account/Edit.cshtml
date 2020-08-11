@@ -1,0 +1,24 @@
+@using ExchangeRatesLib
+
+@model EditAccountViewModel
+
+<h2>Edit your profile</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <form method="POST">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DefaultCurrency"></label>
+                <select asp-for="@Model.DefaultCurrency" asp-items="Html.GetEnumSelectList<CurrencyEnum>()" class="form-control">
+                </select>
+                <span asp-validation-for="DefaultCurrency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a class="btn btn-primary" asp-controller="Account" asp-action="ChangePassword">Change password</a>
+            </div>
+            <button type="submit" class="btn btn-primary">Confirm</button>
+            <a class="btn btn-danger" asp-controller="Home" asp-action="Index">Cancel</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+*/bin
+*/obj
+.dockerignore
+.git
+.gitignore
+.vs
+.vscode
+Logs
+ConsoleTests

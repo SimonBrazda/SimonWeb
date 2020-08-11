@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "SimonWebMVC"
+		},
+		{
+			"path": "CL3C.Services"
+		},
+		{
+			"path": "CL3C.Models"
+		},
+		{
+			"path": "ExchangeRatesLib"
+		},
+		{
+			"path": "Docker"
+		}
+	],
+	"settings": {}
+}

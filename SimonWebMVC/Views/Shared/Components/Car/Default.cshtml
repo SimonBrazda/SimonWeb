@@ -1,0 +1,8 @@
+﻿@using ExchangeRatesLib
+
+@model (BaseCar Car, CurrencyEnum Currency)
+
+<p>Purchase Price: <span>@Model.Car.PurchasePrice @Model.Currency</span></p>
+<p>Technical Life: <span>@Model.Car.TechnicalLife km</span></p>
+<p>Fuel Price: <span>@Math.Round(Model.Car.FuelPrice, 2).ToString("#,##0.00") @Model.Currency/l</span></p>
+<p>Fuel Consumption: <span>@Math.Round(Model.Car.FuelConsumption, 2).ToString("#,##0.00") l/100km</span></p>

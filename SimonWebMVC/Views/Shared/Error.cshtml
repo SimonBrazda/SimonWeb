@@ -1,0 +1,13 @@
+﻿@if (ViewBag.ErrorTitle == null)
+{
+    <h3>
+        An error occured while processing your request.
+        The owner is notified and working on the fix.
+    </h3>
+    <h5>In case you have any questions regarding this issue please the contact owner at simonbrazda@seznam.cz</h5>    
+}
+else
+{
+    <h1>@ViewBag.ErrorTitle</h1>
+    <h6>@ViewBag.ErrorMessage</h6>
+}

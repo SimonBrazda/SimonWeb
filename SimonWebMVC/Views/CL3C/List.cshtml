@@ -1,0 +1,162 @@
+﻿@model CL3CListViewModel
+
+@using ExchangeRatesLib
+@using SimonWebMVC.Extensions
+@using PagedList.Core.Mvc
+
+@inject UserManager<ApplicationUser> userManager
+
+@{
+    ViewData["Title"] = "Car Life Cycle Costs Calculator";
+
+    var isAuthorizedToCreateCar = (await authorizationService.AuthorizeAsync(User, (BaseCar) null, CarOperations.Create)).Succeeded;
+    var Cars = Model.Cars.ToList();
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<form action="" method="post">
+    <div class="form-row">
+        
+        @for (int i = 0; i < Cars.Count(); i++)
+        {
+            <input type="hidden" asp-for="@Cars[i].ID" class="form-control">
+            <input type="hidden" asp-for="@Cars[i].Name" class="form-control">
+            <input type="hidden" asp-for="@Cars[i].Owner" class="form-control">
+            <input type="hidden" asp-for="@Cars[i].BaseLifeCycleCosts" class="form-control">
+            <input type="hidden" asp-for="@Cars[i].BaseCostsPerDistanceUnit" class="form-control">
+            <input type="hidden" asp-for="@Cars[i].PurchasePrice" class="form-control">
+            <input type="hidden" asp-for="@Cars[i].TechnicalLife" class="form-control">
+            <input type="hidden" asp-for="@Cars[i].FuelPrice" class="form-control">
+            <input type="hidden" asp-for="@Cars[i].FuelConsumption" class="form-control">
+        }
+
+    </div>        
+    <div class="form-row">
+        <div class="form-group col-sm-2">
+            <label for="currencySelect">Currency:</label>
+            <select asp-for="@Model.Currency" asp-items="Html.GetEnumSelectList<CurrencyEnum>()" class="form-control" id="currencySelect" onchange="form.submit()">
+            </select>
+        </div>
+        <div class="form-group col-sm-4">
+            <label asp-for="@Model.SearchString">Search by name:</label>
+            <input asp-for="@Model.SearchString"  class="form-control">
+        </div>
+        <div class="form-group align-self-end">
+            <input type="submit" value="Search" class="btn btn-primary"/>
+        </div>
+        <div class="form-group col-sm-2 align-self-end">
+            <a id="Create" class="btn btn-primary text-nowrap" asp-controller="CL3C" asp-action="Create">Insert Car</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table" style="border-collapse:collapse;">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        <div class="dropright">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropDownMenuLink_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Id</a>
+                            <div class="dropdown-menu" aria-labelledby="dropDownMenuLink_1">
+                                <a class="btn btn-outline-primary dropdown-item" asp-action="List" asp-route-sortString="Id_asc" asp-route-searchString="@Model.SearchString" asp-route-currency="@Model.Currency">ascending</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="btn btn-outline-primary dropdown-item" asp-action="List" asp-route-sortString="Id_desc" asp-route-searchString="@Model.SearchString" asp-route-currency="@Model.Currency">descending</a>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="dropright">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropDownMenuLink_2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Name</a>
+                            <div class="dropdown-menu" aria-labelledby="dropDownMenuLink_2">
+                                <a class="btn btn-outline-primary dropdown-item" asp-action="List" asp-route-sortString="Name_asc" asp-route-searchString="@Model.SearchString" asp-route-currency="@Model.Currency">ascending</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="btn btn-outline-primary dropdown-item" asp-action="List" asp-route-sortString="Name_desc" asp-route-searchString="@Model.SearchString" asp-route-currency="@Model.Currency">descending</a>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="dropright">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropDownMenuLink_3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Owner</a>
+                            <div class="dropdown-menu" aria-labelledby="dropDownMenuLink_3">
+                                <a class="btn btn-outline-primary dropdown-item" asp-action="List" asp-route-sortString="Owner_asc" asp-route-searchString="@Model.SearchString" asp-route-currency="@Model.Currency">ascending</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="btn btn-outline-primary dropdown-item" asp-action="List" asp-route-sortString="Owner_desc" asp-route-searchString="@Model.SearchString" asp-route-currency="@Model.Currency">descending</a>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="dropright">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropDownMenuLink_4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Base Life Cycle costs</a>
+                            <div class="dropdown-menu" aria-labelledby="dropDownMenuLink_4">
+                                <a class="btn btn-outline-primary dropdown-item" asp-action="List" asp-route-sortString="CL3C_asc" asp-route-searchString="@Model.SearchString" asp-route-currency="@Model.Currency">ascending</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="btn btn-outline-primary dropdown-item" asp-action="List" asp-route-sortString="CL3C_desc" asp-route-searchString="@Model.SearchString" asp-route-currency="@Model.Currency">descending</a>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="dropright">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropDownMenuLink_5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Base LCC Per Diastance Unit</a>
+                            <div class="dropdown-menu" aria-labelledby="dropDownMenuLink_5">
+                                <a class="btn btn-outline-primary dropdown-item" asp-action="List" asp-route-sortString="CL3CPerDistanceUnit_asc" asp-route-searchString="@Model.SearchString" asp-route-currency="@Model.Currency">ascending</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="btn btn-outline-primary dropdown-item" asp-action="List" asp-route-sortString="CL3CPerDistanceUnit_desc" asp-route-searchString="@Model.SearchString" asp-route-currency="@Model.Currency">descending</a>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var car in Model.Cars.ToList())
+                {
+                    var rowID = "row_"+ @car.ID;
+                    var isAuthorizedToEdit = (await authorizationService.AuthorizeAsync(User, car, CarOperations.Edit)).Succeeded;
+
+                    <tr colspan="6" data-toggle="collapse" data-target="#@rowID" aria-expanded="false" aria-controls="@rowID">
+                        <td>@car.ID.ToString()</td>
+                        <td>@car.Name</td>
+                        <td>@car.Owner</td>
+                        <td>@car.BaseLifeCycleCosts.ToString("#,##0.00") @Model.Currency</td>
+                        <td>@car.BaseCostsPerDistanceUnit.ToString("#,##0.00") @Model.Currency/km</td>
+
+                        <td>
+                            <a data-toggle="collapse" data-target="#@rowID" aria-expanded="false" aria-controls="@rowID" href="#">Details</a>
+                            @if (isAuthorizedToEdit)
+                            {
+                                <text> | </text>
+                                <a asp-action="Edit" asp-route-id="@car.ID">Edit</a>
+                                <text> | </text>
+                                <a asp-action="Delete" asp-route-id="@car.ID" class="text-danger" hidden="@isAuthorizedToCreateCar">Delete</a>
+                            }
+                        </td>
+                    </tr>
+                    <tr class="p">
+                        <td colspan="6" class="hiddenRow">
+                            <div class="collapse accordian-body p-6" id="@rowID">
+                                @{
+                                    (BaseCar Car, CurrencyEnum Currency) Detail = (car, Model.Currency);
+                                }
+                                @await Component.InvokeAsync("Car", Detail)
+                            </div>
+                        </td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</form>
+<br />
+<div class="row align-content-center">
+    <pager class="pager-container" list="@Model.Cars" options="@PagedListRenderOptions.Bootstrap4Full" asp-action="List" asp-controller="CL3C" asp-route-sortString="@Model.SortString" asp-route-searchString="@Model.SearchString" asp-route-sortOrder="@ViewBag.CurrentSort" asp-route-currency="@Model.Currency" />
+</div>
+@* Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", 
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter })) *@
