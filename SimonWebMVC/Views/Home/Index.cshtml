@@ -5,14 +5,28 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
-		<div class="row justify-content-center">
-		  <h2><br/>HOME</h2>
-		</div>
+	  <br>
+	  <div class="row justify-content-center">
+		<h1>Welcome!</h1>
 		<br>
-		<div class="row justify-content-center">
-		  <h3>Welcome!</h3>
-		  </div>
-      <p class="mx-auto">Welcome to my personal web! This place serves as my mean of sharing a bit of myself and things i do with the world. Hope you will find what you are looking for. If you have any questions feel free to contact me at <a href="mailto:simonbrazda@seznam.cz">simonbrazda@seznam.cz</a>.</p>
+	  </div>
+      <p class="mx-auto">Welcome to my personal web. It is build on <a href="https://github.com/dotnet/aspnetcore">ASP.NET Core</a> MVC framework. 
+	  	The website serves as my mean of sharing a bit of myself and things I do with the world. Website data is stored on MariaDB. 
+		Both the website and database run in Docker. For database management and interactions I used <a href="https://github.com/dotnet/efcore">Entity Framework Core</a>.
+	  </p>
+	  <p class="mx-auto">
+		Make sure to checkout my projects, especially web app <a asp-action="List" asp-controller="CL3C">CL3C</a> that, after registration, lets you insert your car and calculate its life cycle costs and compare them to others. 
+		For currency conversions I used and tweaked <a href="https://github.com/eliefaart/OpenExchangeRates">OpenExchangeRates</a> library by Eric Liefaart and <a href="https://exchangeratesapi.io/">exchangeratesapi</a> by Madis Väin. 
+		Big thanks to them! More details about the app can be found <a asp-action="About" asp-controller="CL3C">here.</a>
+	  </p>
+	  <br>
+	  <h3>
+		Reporting security issues and bugs
+	  </h3>
+	  <p class="mx-auto">
+		Please keep in mind that this is my first bigger project in ASP.NET Core and is in early alpha version so bugs and security issues can be encountered. 
+		Please if you find any report them privately, via email, to the <a href="mailto:simonbrazda@seznam.cz">simonbrazda@seznam.cz</a>. 
+	  </p>
 	</div>
   </div>
 </div>

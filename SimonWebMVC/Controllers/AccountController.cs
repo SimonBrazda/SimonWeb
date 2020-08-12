@@ -59,6 +59,7 @@ namespace SimonWebMVC.Controllers
             {
                 var user = new ApplicationUser { UserName = model.Name, Email = model.Email, DefaultCurrency = model.DefaultCurrency.ToString() };
                 var result = await userManager.CreateAsync(user, model.Password);
+                await userManager.AddToRoleAsync(user, Constants.UserRole);
 
                 if (result.Succeeded)
                 {

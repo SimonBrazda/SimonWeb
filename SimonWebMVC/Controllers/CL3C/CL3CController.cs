@@ -153,6 +153,7 @@ namespace SimonWebMVC.Controllers.CL3C
             return View(carsListViewModel);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult About()
         {
