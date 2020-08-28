@@ -39,6 +39,11 @@ namespace SimonWebMVC.Controllers
             return View();
         }
 
+        public IActionResult Thesis()
+        {
+            return View();
+        }
+
         // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         // public IActionResult Error()
         // {

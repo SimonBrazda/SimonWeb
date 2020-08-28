@@ -456,15 +456,33 @@ namespace SimonWebMVC.Controllers
                 return View("NotFound");
             }
 
-            var result = await userManager.DeleteAsync(user);
+            var roles = await userManager.GetRolesAsync(user);
+            var removeFromRolesResult = await userManager.RemoveFromRolesAsync(user, roles);
 
-            if (result.Succeeded)
+            if (removeFromRolesResult.Succeeded)
             {
-                logger.LogInformation("User of Id: {Id} and name: {Name} has been deleted at {Time}.", user.Id, user.UserName, DateTime.Now);
-                return RedirectToAction(nameof(ListUsers));
+                var result = await userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    logger.LogInformation("User of Id: {Id} and name: {Name} has been deleted at {Time}.", user.Id, user.UserName, DateTime.Now);
+                    return RedirectToAction(nameof(ListUsers));
+                }
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
             }
 
-            foreach (var error in result.Errors)
+            var revertResult = await userManager.AddToRolesAsync(user, roles);
+
+            foreach (var error in removeFromRolesResult.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            foreach (var error in revertResult.Errors)
             {
                 ModelState.AddModelError("", error.Description);
             }
